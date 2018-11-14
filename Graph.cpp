@@ -1,15 +1,33 @@
+<<<<<<< HEAD
+=======
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+#include <cstdlib>     // bibliotheque c standart
+#include <iostream>    // flux d'entrÈe sortie
+#include <iomanip>
+
+>>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
 #include "Graph.h"
 
 using namespace std;
 
+<<<<<<< HEAD
 /* voir le descriptif des methodes dans .h*/
 
+=======
+>>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
 Graph::Graph()
 {
     listEdge = NULL;
     listVertex = NULL;
+<<<<<<< HEAD
 	adjmatrix = NULL;
     sizeV = 0;
+=======
+    sizeG = 0;
+>>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
     sizeM = 0;
 }
 
@@ -17,14 +35,22 @@ Graph::~Graph()
 {
 	delete listEdge;
 	delete listVertex;
+<<<<<<< HEAD
 	delete adjmatrix;
+=======
+	free(adjmatrix);
+>>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
 }
 
 void Graph::display()
 {
     int s=0;
     Vertex* temp = listVertex;
+<<<<<<< HEAD
     while(s<sizeV)
+=======
+    while(s<sizeG)
+>>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
     {
         cout << temp->getID() << endl;
         temp = temp->next();
@@ -34,7 +60,11 @@ void Graph::display()
 
 void Graph::ajouteVertex(Vertex* v)
 {
+<<<<<<< HEAD
     if(sizeV == 0) //yes
+=======
+    if(sizeG == 0) //yes
+>>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
     {
         listVertex=v;
     }
@@ -43,29 +73,49 @@ void Graph::ajouteVertex(Vertex* v)
         Vertex* temp;
         int s=0;
         temp=listVertex;
+<<<<<<< HEAD
         while(s<sizeV-1)
+=======
+        while(s<sizeG-1)
+>>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
         {
             temp=temp->next();
             s++;
         }
         temp->next(v);
     }
+<<<<<<< HEAD
     sizeV++;
+=======
+    sizeG++;
+>>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
 }
 
 void Graph::deleteVertex(int id)
 {
+<<<<<<< HEAD
     if(sizeV<=0 || id<1 || id>sizeV)
     {
         cout << "La liste est vide ou il y a un probleme" << endl;
     }
     else if(sizeV==1)
+=======
+    if(sizeG<=0 || id<1 || id>sizeG)
+    {
+        cout << "La liste est vide ou il y a un probleme" << endl;
+    }
+    else if(sizeG==1)
+>>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
     {
         Vertex* temp;
         temp = listVertex;
         listVertex = NULL;
         delete temp;
+<<<<<<< HEAD
         sizeV--;
+=======
+        sizeG--;
+>>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
     }
     else if(id==1)
     {
@@ -77,8 +127,13 @@ void Graph::deleteVertex(int id)
         delete temp;
         int i=0;
         temp1 = listVertex;
+<<<<<<< HEAD
         sizeV--;
         while(i<sizeV)
+=======
+        sizeG--;
+        while(i<sizeG)
+>>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
         {
             temp1->setID(temp1->getID()-1);
             temp1 = temp1->next();
@@ -98,7 +153,11 @@ void Graph::deleteVertex(int id)
             temp1=temp1->next();
             s1++;
         }
+<<<<<<< HEAD
         while(s2<sizeV-2)
+=======
+        while(s2<sizeG-2)
+>>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
         {
             temp2=temp2->next();
             s2++;
@@ -110,7 +169,11 @@ void Graph::deleteVertex(int id)
         temp1->next()->next(temp->next());
         temp->next(NULL);
         delete temp;
+<<<<<<< HEAD
         sizeV--;
+=======
+        sizeG--;
+>>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
     }
 }
 
