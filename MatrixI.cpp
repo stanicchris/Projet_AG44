@@ -1,18 +1,12 @@
+#include "libs.h"
 #include "MatrixI.h"
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-#include <cstdlib>     // bibliotheque c standart
-#include <iostream>    // flux d'entrÈe sortie
-#include <iomanip>
 
 using namespace std;
 
+/* voir le descriptif des methodes dans .h*/
+
 MatrixI::MatrixI()
 {}
-
 
 MatrixI::~MatrixI()
 {
@@ -31,6 +25,11 @@ MatrixI::MatrixI(int s)
 			this->tab[i][j]=0;
 		}
 	}
+}
+
+MatrixI::MatrixI(const MatrixI*)
+{
+
 }
 
 void MatrixI::display()

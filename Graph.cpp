@@ -1,20 +1,15 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-#include <cstdlib>     // bibliotheque c standart
-#include <iostream>    // flux d'entrÈe sortie
-#include <iomanip>
-
 #include "Graph.h"
 
 using namespace std;
+
+/* voir le descriptif des methodes dans .h*/
 
 Graph::Graph()
 {
     listEdge = NULL;
     listVertex = NULL;
-    sizeG = 0;
+	adjmatrix = NULL;
+    sizeV = 0;
     sizeM = 0;
 }
 
@@ -22,14 +17,14 @@ Graph::~Graph()
 {
 	delete listEdge;
 	delete listVertex;
-	free(adjmatrix);
+	delete adjmatrix;
 }
 
 void Graph::display()
 {
     int s=0;
     Vertex* temp = listVertex;
-    while(s<sizeG)
+    while(s<sizeV)
     {
         cout << temp->getID() << endl;
         temp = temp->next();
@@ -39,7 +34,7 @@ void Graph::display()
 
 void Graph::ajouteVertex(Vertex* v)
 {
-    if(sizeG == 0) //yes
+    if(sizeV == 0) //yes
     {
         listVertex=v;
     }
@@ -48,29 +43,29 @@ void Graph::ajouteVertex(Vertex* v)
         Vertex* temp;
         int s=0;
         temp=listVertex;
-        while(s<sizeG-1)
+        while(s<sizeV-1)
         {
             temp=temp->next();
             s++;
         }
         temp->next(v);
     }
-    sizeG++;
+    sizeV++;
 }
 
 void Graph::deleteVertex(int id)
 {
-    if(sizeG<=0 || id<1 || id>sizeG)
+    if(sizeV<=0 || id<1 || id>sizeV)
     {
         cout << "La liste est vide ou il y a un probleme" << endl;
     }
-    else if(sizeG==1)
+    else if(sizeV==1)
     {
         Vertex* temp;
         temp = listVertex;
         listVertex = NULL;
         delete temp;
-        sizeG--;
+        sizeV--;
     }
     else if(id==1)
     {
@@ -82,8 +77,8 @@ void Graph::deleteVertex(int id)
         delete temp;
         int i=0;
         temp1 = listVertex;
-        sizeG--;
-        while(i<sizeG)
+        sizeV--;
+        while(i<sizeV)
         {
             temp1->setID(temp1->getID()-1);
             temp1 = temp1->next();
@@ -103,7 +98,7 @@ void Graph::deleteVertex(int id)
             temp1=temp1->next();
             s1++;
         }
-        while(s2<sizeG-2)
+        while(s2<sizeV-2)
         {
             temp2=temp2->next();
             s2++;
@@ -115,7 +110,7 @@ void Graph::deleteVertex(int id)
         temp1->next()->next(temp->next());
         temp->next(NULL);
         delete temp;
-        sizeG--;
+        sizeV--;
     }
 }
 

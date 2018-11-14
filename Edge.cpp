@@ -1,16 +1,8 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-#include <cstdlib>     // bibliotheque c standart
-#include <iostream>    // flux d'entrÈe sortie
-#include <iomanip>
-
 #include "Edge.h"
 
 using namespace std;
 
-//voir l'objetctif des methodes dans le .h
+/* voir le descriptif des methodes dans .h*/
 
 Edge::Edge()
 {

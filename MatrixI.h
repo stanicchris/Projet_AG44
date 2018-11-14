@@ -1,6 +1,8 @@
 #ifndef MATRIXI_H
 #define MATRIXI_H
 
+#include "libs.h"
+
 /*
 pour les graphes orientés :
 	Aij = -1 si arc est sortant de Vi
@@ -19,10 +21,10 @@ class MatrixI
 		~MatrixI();
 		MatrixI(const MatrixI*);
 		MatrixI(int);
-		void display();
+		void display(); //affiche la matrice
 	private :
-	    int m_size;
-		int** tab;
+	    int m_size; //taille de la matrice
+		int** tab; //tableau de la matrice
 };
 
 #endif

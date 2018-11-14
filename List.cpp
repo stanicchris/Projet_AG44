@@ -7,6 +7,11 @@ List::List()
     vlist = NULL;
 }
 
+List::~List()
+{
+	delete vlist;
+}
+
 List::List(Graph* g)
 {
     vlist = NULL;

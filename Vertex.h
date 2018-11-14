@@ -1,6 +1,8 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 
+#include "libs.h"
+
 //un sommet ne peut faire partie que d'un seul graphe a la fois
 class Vertex
 {
