@@ -16,7 +16,6 @@ Graph::~Graph()
 	delete listEdge;
 	delete listVertex;
 	delete adjmatrix;
-	/* free(adjmatrix); depend de l'allocation */
 }
 
 void Graph::display()
