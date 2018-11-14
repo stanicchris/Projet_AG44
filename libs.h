@@ -6,5 +6,7 @@
 #include <string.h>
 #include <cstdlib>     // bibliotheque c standart
 #include <iostream>    // flux d'entree sortie
-#include <iomanip>     // manipulateurs de flux
+#include <iomanip>     // manipulateurs de flux*/
 #include <vector>
+
+using namespace std;

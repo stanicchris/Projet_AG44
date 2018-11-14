@@ -5,7 +5,7 @@ all : main
 main : main.o Graph.o Edge.o Vertex.o List.o MatrixI.o Heap.o
 	$(GCC) -o main main.o Graph.o Edge.o Vertex.o List.o MatrixI.o Heap.o
 
-main.o : main.cpp
+main.o : main.cpp Graph.h Edge.h Vertex.h List.h MatrixI.h Heap.h
 	$(GCC) -o main.o -c main.cpp
 
 Graph.o : Graph.cpp
