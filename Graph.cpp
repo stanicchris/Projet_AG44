@@ -6,24 +6,42 @@ Graph::Graph()
 {
     listEdge = NULL;
     listVertex = NULL;
-	adjmatrix = NULL;
+    matrixadj = NULL;
     sizeV = 0;
     sizeM = 0;
+    sizeE = 0;
 }
 
 Graph::~Graph()
 {
 	delete listEdge;
 	delete listVertex;
-	delete adjmatrix;
+	delete matrixadj;
 }
 
 void Graph::display()
 {
-    /* A ecrire avec un vector */
+    /* */
 }
 
-void Graph::ajouteVertex(Vertex* v) /* l'ajout se fait par le fichier graph_file.txt */
+void Graph::file2graph() /* creation du graph a partir du fichier graph_file.txt*/
+{
+	ifstream infile;
+	infile.open("graph_file.txt");
+	if(infile.fail()) { cerr << "Erreur dans l'ouverture du fichier" << endl;}
+	else {
+		infile >> this->sizeV;
+		infile >> this->oriented;
+		infile >> this->type;
+		for(int i=0;i<this->sizeV;i++) {
+			/* construire le graphe */
+			
+		}
+		infile.close();
+	}
+}
+
+void Graph::ajouteVertex(Vertex* v) /*  */
 {
     if(sizeV == 0) //yes
     {
@@ -36,10 +54,10 @@ void Graph::ajouteVertex(Vertex* v) /* l'ajout se fait par le fichier graph_file
         temp=listVertex;
         while(s<sizeV-1)
         {
-            temp=temp->next();
+            temp=temp->get_next();
             s++;
         }
-        temp->next(v);
+        temp->set_next(v);
     }
     sizeV++;
 }
@@ -63,8 +81,8 @@ void Graph::deleteVertex(int id)
         Vertex* temp;
         Vertex* temp1;
         temp = listVertex;
-        listVertex = temp->next();
-        temp->next(NULL);
+        listVertex = temp->get_next();
+        temp->set_next(NULL);
         delete temp;
         int i=0;
         temp1 = listVertex;
@@ -72,7 +90,7 @@ void Graph::deleteVertex(int id)
         while(i<sizeV)
         {
             temp1->setID(temp1->getID()-1);
-            temp1 = temp1->next();
+            temp1 = temp1->get_next();
             i++;
         }
     }
@@ -84,22 +102,22 @@ void Graph::deleteVertex(int id)
         int s1=0, s2=0;
         temp1=listVertex;
         temp2=listVertex;
-        while(temp1->next()->getID()!= id)
+        while(temp1->get_next()->getID()!= id)
         {
-            temp1=temp1->next();
+            temp1=temp1->get_next();
             s1++;
         }
         while(s2<sizeV-2)
         {
-            temp2=temp2->next();
+            temp2=temp2->get_next();
             s2++;
         }
-        temp=temp1->next();
-        temp2->next()->setID(temp->getID());
-        temp1->next(temp2->next());
-        temp2->next(NULL);
-        temp1->next()->next(temp->next());
-        temp->next(NULL);
+        temp=temp1->get_next();
+        temp2->get_next()->setID(temp->getID());
+        temp1->set_next(temp2->get_next());
+        temp2->set_next(NULL);
+        temp1->get_next()->set_next(temp->get_next());
+        temp->set_next(NULL);
         delete temp;
         sizeV--;
     }

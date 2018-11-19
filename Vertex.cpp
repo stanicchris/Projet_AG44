@@ -3,35 +3,16 @@
 
 /* voir le descriptif des methodes dans .h*/
 
-Vertex::Vertex(){}
+Vertex::Vertex(){this->next = NULL;}
 
-Vertex::~Vertex()
-{
-    delete suiv;
-}
+Vertex::~Vertex() {delete next;}
 
-Vertex::Vertex(int a,int b,int Id)
-{
+Vertex::Vertex(int a,int b,int Id) {
     this->x=a;
     this->y=b;
     this->id = Id;
 }
 
-Vertex* Vertex::next()
-{
-    if(this->suiv!=NULL)
-    {
-        return this->suiv;
-    }
-    else
-    {
-        this->suiv = new Vertex();
-        return this->suiv;
-    }
-}
+Vertex* Vertex::get_next() {return this->next;}
 
-void Vertex::next(Vertex* v)
-{
-    suiv= new Vertex();
-    suiv = v;
-}
+void Vertex::set_next(Vertex* v) {if(v!=NULL) {this->next = v;}}

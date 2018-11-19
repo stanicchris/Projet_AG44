@@ -24,14 +24,17 @@ class Graph
 		void graph_n_list(); //construit une liste d'adjacence pour graphe non oriente
 		void file2graph(); /* construit le graphe a partir du fichier graph_file.txt */
 
-private :
-        Edge* listEdge;
-        Vertex* listVertex;
-        int sizeM; //taille de la matrice
-        int sizeV; //nb de sommet du graphe
-        int sizeE; //nb d'arrete du graphe
-        vector<vector<Vertex> > listadj; //pointeur vers la liste d'adjacence du graphe
-        MatrixI* adjmatrix; //pointeur vers la matrice d'adjacence du graphe
+	private :
+		/* ce serait peut etre mieux de faire des vector de vertex et de edge, a voir ! */
+		Edge* listEdge; /* liste des edges du graphe */
+		Vertex* listVertex; /* liste des vertex */
+		int sizeM; /* taille de la matrice */
+		int sizeV; /* nb de sommet du graphe */
+		int sizeE; /* nb d'arrete du graphe */
+		int oriented; /* 1 : oriente, 0 non-oriente */
+		int type; /* 1 liste , 0 martice */
+		vector<vector<Vertex> > listadj; /* vecteur de la liste d'adjacence du graphe */
+		MatrixI* matrixadj; /* pointeur vers la matrice d'adjacence du graphe */
 };
 
 #endif
