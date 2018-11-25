@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-#include <cstdlib>     // bibliotheque c standart
-#include <iostream>    // flux d'entree sortie
-#include <iomanip>     // manipulateurs de flux
+#include <cstdlib>	// bibliotheque c standart
+#include <iostream>	// flux d'entree sortie
+#include <iomanip>	// manipulateurs de flux
 #include <vector>
+#include <fstream>	//lecture/ecriture fichier

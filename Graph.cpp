@@ -1,124 +1,154 @@
-<<<<<<< HEAD
-=======
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-#include <cstdlib>     // bibliotheque c standart
-#include <iostream>    // flux d'entr√àe sortie
-#include <iomanip>
-
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
 #include "Graph.h"
 
-using namespace std;
-
-<<<<<<< HEAD
-/* voir le descriptif des methodes dans .h*/
-
-=======
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
-Graph::Graph()
-{
-    listEdge = NULL;
-    listVertex = NULL;
-<<<<<<< HEAD
+Graph::Graph() {
+	listEdge = NULL;
+	listVertex = NULL;
 	adjmatrix = NULL;
-    sizeV = 0;
-=======
-    sizeG = 0;
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
-    sizeM = 0;
+	sizeV = 0;
 }
 
-Graph::~Graph()
-{
+Graph::~Graph() {
 	delete listEdge;
 	delete listVertex;
-<<<<<<< HEAD
-	delete adjmatrix;
-=======
 	free(adjmatrix);
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
 }
 
-void Graph::display()
-{
-    int s=0;
-    Vertex* temp = listVertex;
-<<<<<<< HEAD
-    while(s<sizeV)
-=======
-    while(s<sizeG)
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
-    {
+Vertex* Graph::vertex_id(int id) {
+	if (id > sizeV) {
+		cout << "Le vecteur n∞" << id << " n'existe pas" << endl;
+		return NULL;
+	}
+	else {
+		Vertex* temp = listVertex;
+		for (int i = 0; i < id; i++) { temp = temp->next(); }
+		return temp;
+	}
+}
+
+void Graph::file2graph() {
+	ifstream infile;
+	infile.open("source/graph_file.txt"); /* changer le chemin si necessaire */
+	if (infile.fail()) { cout << "Ouverture du fichier graph_file.txt echouee !" << endl; }
+	else {
+		char c;
+		infile >> this->sizeV;
+		if (sizeV > 0) { /* construit la liste */
+			Vertex* temp;
+			listVertex = new Vertex(0, 0, 1);
+			temp = listVertex;
+			for (int i = 1; i < sizeV; i++) {
+				temp->next(new Vertex(0, 0, i + 1));
+				temp = temp->next();
+			}
+			/*cout << _getcwd(NULL,0) << endl; afficher le repertoire courant */
+			infile >> c;
+			if (c == 'o') {
+				this->type = 1;
+				infile >> c;
+				if (c == 'l') {
+					this->adj = 1;
+					cout << "graphe oriente avec liste adjacence" << endl;
+					graph_o_list(infile);
+				}
+				else if (c == 'm') {
+					this->adj = 0;
+					cout << "graphe oriente avec matrice adjacence" << endl;
+					graph_o_matrix(infile);
+				}
+				else { cout << "Erreur dans le type d'adjacence du graphe dans le fichier txt" << endl; }
+			}
+			else if (c == 'n') {
+				this->type = 0;
+				infile >> c;
+				if (c == 'l') {
+					this->adj = 1;
+					cout << "graphe non oriente avec liste adjacence" << endl;
+					graph_n_list(infile);
+				}
+				else if (c == 'm') {
+					this->adj = 0;
+					cout << "graphe non oriente avec matrice adjacence" << endl;
+					graph_n_matrix(infile);
+				}
+				else { cout << "Erreur dans le type d'adjacence du graphe dans le fichier txt" << endl; }
+			}
+			else { cout << "Erreur dans le type de graphe dans le ichier txt" << endl; }
+		}
+		else { cout << "taille du graphe infereieur ou egale a 0" << endl; }
+	}
+	infile.close();
+}
+
+void Graph::graph_o_matrix(ifstream& infile) {
+	this->adjmatrix = new int*[sizeV];
+	for (int i = 0;i < this->sizeV;i++) {
+		this->adjmatrix[i] = new int[sizeV];
+		for (int j = 0;j < this->sizeV;j++) { infile >> this->adjmatrix[i][j]; }
+	}
+}
+
+void Graph::graph_n_matrix(ifstream& infile) {
+	this->adjmatrix = new int*[sizeV];
+	for (int i = 0;i < this->sizeV;i++) {
+		this->adjmatrix[i] = new int[sizeV];
+		for (int j = 0;j < i;j++) { infile >> this->adjmatrix[i][j]; }
+	}
+}
+
+void Graph::graph_o_list(ifstream& infile) {
+	int i;
+	vector<Vertex*> temp;
+	for (int j = 0; j < this->sizeV; j++) {
+		this->adjlist.push_back(temp);
+		infile >> i;
+		while (i != 0) {
+			adjlist[j].push_back(vertex_id(i));
+			infile >> i;
+		}
+	}
+}
+
+void Graph::graph_n_list(ifstream& infile) {
+
+}
+
+void Graph::display() {
+	Vertex* temp = listVertex;
+    for(int i=0;i<sizeV;i++) {
         cout << temp->getID() << endl;
         temp = temp->next();
-        s++;
     }
 }
 
-void Graph::ajouteVertex(Vertex* v)
-{
-<<<<<<< HEAD
-    if(sizeV == 0) //yes
-=======
-    if(sizeG == 0) //yes
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
-    {
+void Graph::ajouteVertex(Vertex* v) {
+    if(sizeV == 0) {//yes
         listVertex=v;
     }
-    else
-    {
+    else {
         Vertex* temp;
         int s=0;
         temp=listVertex;
-<<<<<<< HEAD
-        while(s<sizeV-1)
-=======
-        while(s<sizeG-1)
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
-        {
+        while(s<sizeV-1) {
             temp=temp->next();
             s++;
         }
         temp->next(v);
     }
-<<<<<<< HEAD
     sizeV++;
-=======
-    sizeG++;
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
 }
 
-void Graph::deleteVertex(int id)
-{
-<<<<<<< HEAD
-    if(sizeV<=0 || id<1 || id>sizeV)
-    {
+void Graph::deleteVertex(int id) {
+    if(sizeV<=0 || id<1 || id>sizeV) {
         cout << "La liste est vide ou il y a un probleme" << endl;
     }
-    else if(sizeV==1)
-=======
-    if(sizeG<=0 || id<1 || id>sizeG)
-    {
-        cout << "La liste est vide ou il y a un probleme" << endl;
-    }
-    else if(sizeG==1)
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
-    {
+    else if(sizeV==1) {
         Vertex* temp;
         temp = listVertex;
         listVertex = NULL;
         delete temp;
-<<<<<<< HEAD
         sizeV--;
-=======
-        sizeG--;
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
     }
-    else if(id==1)
-    {
+    else if(id==1) {
         Vertex* temp;
         Vertex* temp1;
         temp = listVertex;
@@ -127,38 +157,25 @@ void Graph::deleteVertex(int id)
         delete temp;
         int i=0;
         temp1 = listVertex;
-<<<<<<< HEAD
         sizeV--;
-        while(i<sizeV)
-=======
-        sizeG--;
-        while(i<sizeG)
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
-        {
+        while(i<sizeV) {
             temp1->setID(temp1->getID()-1);
             temp1 = temp1->next();
             i++;
         }
     }
-    else
-    {
+    else {
         Vertex* temp;
         Vertex* temp1;
         Vertex* temp2;
         int s1=0, s2=0;
         temp1=listVertex;
         temp2=listVertex;
-        while(temp1->next()->getID()!= id)
-        {
+        while(temp1->next()->getID()!= id)  {
             temp1=temp1->next();
             s1++;
         }
-<<<<<<< HEAD
-        while(s2<sizeV-2)
-=======
-        while(s2<sizeG-2)
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
-        {
+        while(s2<sizeV-2) {
             temp2=temp2->next();
             s2++;
         }
@@ -169,27 +186,19 @@ void Graph::deleteVertex(int id)
         temp1->next()->next(temp->next());
         temp->next(NULL);
         delete temp;
-<<<<<<< HEAD
         sizeV--;
-=======
-        sizeG--;
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
     }
 }
 
-void Graph::ajouteEdge(Edge* e)
-{
-    if(sizeE == 0)
-    {
+void Graph::ajouteEdge(Edge* e) {
+    if(sizeE == 0) {
         listEdge=e;
     }
-    else
-    {
+    else {
         Edge* temp;
         int s=0;
         temp=listEdge;
-        while(s<sizeE-1)
-        {
+        while(s<sizeE-1) {
             temp=temp->next();
             s++;
         }
@@ -198,22 +207,18 @@ void Graph::ajouteEdge(Edge* e)
     sizeE++;
 }
 
-void Graph::deleteEdge(int id)
-{
-    if(sizeE<=0 || id<1 || id>sizeE)
-    {
+void Graph::deleteEdge(int id) {
+    if(sizeE<=0 || id<1 || id>sizeE) {
         cout << "La liste est vide ou il y a un probleme" << endl;
     }
-    else if(sizeE==1)
-    {
+    else if(sizeE==1) {
         Edge* temp;
         temp = listEdge;
         listEdge = NULL;
         delete temp;
         sizeE--;
     }
-    else if(id==1)
-    {
+    else if(id==1) {
         Edge* temp;
         Edge* temp1;
         temp = listEdge;
@@ -230,21 +235,18 @@ void Graph::deleteEdge(int id)
             i++;
         }
     }
-    else
-    {
+    else {
         Edge* temp;
         Edge* temp1;
         Edge* temp2;
         int s1=0, s2=0;
         temp1=listEdge;
         temp2=listEdge;
-        while(temp1->next()->getID()!= id)
-        {
+        while(temp1->next()->getID()!= id)  {
             temp1=temp1->next();
             s1++;
         }
-        while(s2<sizeE-2)
-        {
+        while(s2<sizeE-2) {
             temp2=temp2->next();
             s2++;
         }
@@ -259,39 +261,19 @@ void Graph::deleteEdge(int id)
     }
 }
 
-Edge* Graph::voisins(Vertex* u,Vertex* v)
-{
-    if(listEdge != NULL)
-    {
+Edge* Graph::voisins(Vertex* u,Vertex* v) {
+    if(listEdge != NULL)  {
         Edge* temp = listEdge;
-        if((temp->getDest() == v && temp->getSrc() == u) || (temp->getDest() == u && temp->getSrc() == v))
-            {
-                return temp;
-            }
-        else
-        {
-            while(temp->next() != NULL)
-            {
-                if((temp->getDest() == v && temp->getSrc() == u) || (temp->getDest() == u && temp->getSrc() == v))
-                    {
-                        return temp;
-                    }
-                else
-                    {temp=temp->next();}
+        if((temp->getDest() == v && temp->getSrc() == u) || (temp->getDest() == u && temp->getSrc() == v))  { return temp; }
+        else {
+            while(temp->next() != NULL)  {
+                if((temp->getDest() == v && temp->getSrc() == u) || (temp->getDest() == u && temp->getSrc() == v)) { return temp; }
+                else {temp=temp->next();}
             }
         }
-        if((temp->getDest() == v && temp->getSrc() == u) || (temp->getDest() == u && temp->getSrc() == v))
-            {
-                return temp;
-            }
-        else
-        {
-            return NULL;
-        }
+        if((temp->getDest() == v && temp->getSrc() == u) || (temp->getDest() == u && temp->getSrc() == v)) { return temp; }
+        else { return NULL; }
     }
-    else
-        {
-            return NULL;
-        }
+    else { return NULL; }
 }
 

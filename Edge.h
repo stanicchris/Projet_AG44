@@ -1,11 +1,9 @@
 #ifndef EDGE_H
 #define EDGE_H
 
-<<<<<<< HEAD
 #include "libs.h"
-=======
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
 #include "Vertex.h"
+using namespace std;
 
 //lorqu'on créer une arrete, on lui associe necessairement deux sommets
 class Edge

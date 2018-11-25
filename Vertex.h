@@ -1,11 +1,9 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 
-<<<<<<< HEAD
 #include "libs.h"
+using namespace std;
 
-=======
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
 //un sommet ne peut faire partie que d'un seul graphe a la fois
 class Vertex
 {
@@ -19,7 +17,7 @@ class Vertex
         void setID(int a){this->id=a;}
         void setX(int a){this->x=a;}
         void setY(int a){this->y=a;}
-        Vertex* next();// renvoie le sommet suivant de la liste des sommets du graphe, utilisé uniquement par le graphe
+		Vertex* next() {return this->suiv;}// renvoie le sommet suivant de la liste des sommets du graphe, utilisé uniquement par le graphe
         void next(Vertex*);// construit le sommet suivant dans la liste des sommets du graphe
     private :
         int id;

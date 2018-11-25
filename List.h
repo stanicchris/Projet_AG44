@@ -1,19 +1,9 @@
 #ifndef LIST_H
 #define LIST_H
 
-<<<<<<< HEAD
 #include "libs.h"
-=======
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-#include <cstdlib>
-#include <iostream>
-#include <iomanip>
-
->>>>>>> ee2a716bb9dd5ca8cb22dd7e4459354f87d7f36a
 #include "Vertex.h"
+using namespace std;
 
 class Graph; //créer l'interdépendance entre list et graph, evite les boucles d'include
 class List
