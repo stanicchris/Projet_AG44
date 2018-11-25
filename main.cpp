@@ -6,8 +6,6 @@
 #include "Vertex.h"
 #include "Heap.h"
 
-using namespace std;
-
 int main(int argc, char **argv)
 {
 	cout << "---- Welcome to Graph ----" << endl;
@@ -21,4 +19,3 @@ int main(int argc, char **argv)
 	system("pause"); /*permet de voir le terminal */
 	return 0;
 }
-

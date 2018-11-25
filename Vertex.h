@@ -2,6 +2,7 @@
 #define VERTEX_H
 
 #include "libs.h"
+
 using namespace std;
 
 //un sommet ne peut faire partie que d'un seul graphe a la fois

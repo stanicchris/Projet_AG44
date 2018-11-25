@@ -1,6 +1,4 @@
-#include "Graph.h"
-
-using namespace std;
+#include "List.h"
 
 List::List()
 {
@@ -28,4 +26,3 @@ void List::disp()
         cout << "id\t" << endl;
     }
 }
-

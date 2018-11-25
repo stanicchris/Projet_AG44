@@ -3,7 +3,6 @@
 
 #include "libs.h"
 #include "Vertex.h"
-using namespace std;
 
 //lorqu'on créer une arrete, on lui associe necessairement deux sommets
 class Edge

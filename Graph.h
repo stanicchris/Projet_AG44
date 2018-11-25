@@ -7,8 +7,6 @@
 #include "List.h"
 #include "MatrixI.h"
 
-using namespace std;
-
 class Graph
 {
 	public :

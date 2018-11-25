@@ -276,4 +276,3 @@ Edge* Graph::voisins(Vertex* u,Vertex* v) {
     }
     else { return NULL; }
 }
-
