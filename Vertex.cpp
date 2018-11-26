@@ -1,13 +1,11 @@
 #include "Vertex.h"
 
-Vertex::Vertex(){}
+Vertex::Vertex() {}
 
 Vertex::~Vertex(){}
 
-Vertex::Vertex(int a,int b,int Id) {
-    this->x=a;
-    this->y=b;
-    this->id = Id;
+Vertex::Vertex(int a,int b,unsigned int _id) {
+    x=a;
+    y=b;
+    id = _id;
 }
-
-void Vertex::next(Vertex* v) {suiv = v;}
