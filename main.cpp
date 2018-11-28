@@ -14,7 +14,10 @@ int main(int argc, char **argv)
 
 	graph->file2graph();
 	graph->display();
+	graph->deleteEdge(3);
+	graph->display();
 
 	delete graph;
+	system("pause");
 	return 0;
 }

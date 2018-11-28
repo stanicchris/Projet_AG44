@@ -12,7 +12,7 @@ class Vertex
 		Vertex();
 		~Vertex();
 		Vertex(int,int,unsigned int); // créer un sommet avec ses coordonnees et un ID
-        unsigned int getID(){return id;}
+		unsigned int getID() {return id; }
         int getX(){return x;}
         int getY(){return y;}
         void setID(int a){id=a;}

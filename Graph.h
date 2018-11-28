@@ -29,8 +29,10 @@ class Graph
 		void graph_o_list(ifstream&);
 		void graph_n_list(ifstream&);
 		void file2graph(); // construit le graphe a partir du fichier graph_file.txt
-		void create_n_edge(Vertex*, Vertex*);
+		void create_n_edge(Vertex*, Vertex*); //créer un edge oriente pour les deux vertex en question
 		void create_o_edge(Vertex*, Vertex*);
+		// passer d'une list d'adjacence a une matrix (et inversement) pour
+		// les deux types de graphe
 		void o_list2matrix();
 		void n_list2matrix();
 		void o_matrix2list();
@@ -38,12 +40,12 @@ class Graph
 		Edge* is_n_edge(Vertex*, Vertex*); // verifie si un non oriente relie ces vertexs
 		Edge* is_o_edge(Vertex*, Vertex*);
 private :
-        vector<Edge*> listEdge;
-        vector<Vertex*> listVertex;
-        unsigned int sizeV; // = listVertex.size()
+	vector<Edge*> listEdge;
+	vector<Vertex*> listVertex;
+	unsigned int sizeV; // = listVertex.size()
 	unsigned int sizeE; // = listEdge.size()
-        vector<vector<Vertex*> > adjlist; //liste d'adjacence du graphe
-	unsigned int** adjmatrix; //matrice d'adjacence du graphe
+	vector<vector<Vertex*> > adjlist; //liste d'adjacence du graphe
+	vector<vector<unsigned int> > adjmatrix; //matrice d'adjacence du graphe
 	unsigned int type; // 1 oriente / 0 non-oriente
 	unsigned int adj; // 1 liste / 0 matrice
 };

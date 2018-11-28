@@ -1,7 +1,6 @@
 #include "Graph.h"
 
 Graph::Graph() {
-	adjmatrix = NULL;
 	sizeV = 0;
 	sizeE=0;
 }
@@ -9,8 +8,6 @@ Graph::Graph() {
 Graph::~Graph() {
 	for (unsigned int i = 0; i < listVertex.size(); i++) { delete listVertex[i]; }
 	for (unsigned int i = 0; i < listEdge.size(); i++) { delete listEdge[i]; }
-	for (unsigned int i = 0; i <sizeV; i++){delete adjmatrix[i];}
-	delete adjmatrix;
 }
 
 void Graph::create_n_edge(Vertex* v1, Vertex* v2) {
@@ -24,6 +21,7 @@ void Graph::create_o_edge(Vertex* src, Vertex* dest) {
 void Graph::file2graph() {
 	ifstream infile;
 	infile.open("graph_file.txt"); /* changer le chemin si necessaire */
+	//infile.open("source/graph_file.txt");
 	if (infile.fail()) { cout << "Ouverture du fichier graph_file.txt echouee !" << endl; }
 	else {
 		char c;
@@ -72,22 +70,26 @@ void Graph::file2graph() {
 }
 
 void Graph::graph_o_matrix(ifstream& infile) {
-	adjmatrix = new unsigned int*[sizeV];
+	vector<unsigned int> temp;
+	int val;
 	for (unsigned int i = 0; i<sizeV; i++) {
-		adjmatrix[i] = new unsigned int[sizeV];
+		adjmatrix.push_back(temp);
 		for (unsigned int j = 0; j<sizeV; j++) {
-			infile >> adjmatrix[i][j];
+			infile >> val;
+			adjmatrix[i].push_back(val);
 			if (adjmatrix[i][j] == 1) { create_o_edge(listVertex[i], listVertex[j]); }
 		}
 	}
 }
 
 void Graph::graph_n_matrix(ifstream& infile) {
-	adjmatrix = new unsigned int* [sizeV];
+	vector<unsigned int> temp;
+	int val;
 	for (unsigned int i = 0; i<sizeV; i++) {
-		adjmatrix[i] = new unsigned int [sizeV];
+		adjmatrix.push_back(temp);
 		for (unsigned int j = 0; j<i+1; j++) {
-			infile >> adjmatrix[i][j];
+			infile >> val;
+			adjmatrix[i].push_back(val);
 			if (adjmatrix[i][j] == 1) { create_n_edge(listVertex[i], listVertex[j]); }
 		}
 	}
@@ -127,7 +129,7 @@ void Graph::display() {
 	else { cout << "Le type du graphe n'est pas defini !" << endl; }
 }
 
-void Graph::display_o() {
+void Graph::display_n() {
 	cout << "vertex : ";
     for(unsigned int i=0; i<listVertex.size(); i++) {
         cout << listVertex[i]->getID() << " ";
@@ -138,7 +140,7 @@ void Graph::display_o() {
 	}
 }
 
-void Graph::display_n() {
+void Graph::display_o() {
 	cout << "vertex :" << endl;
 	for (unsigned int i = 0;i < listVertex.size();i++) {
 		cout << listVertex[i]->getID() << endl;
@@ -151,10 +153,44 @@ void Graph::display_n() {
 
 void Graph::deleteVertex(unsigned int id) {
 	if (id <= listVertex.size()) {
+		unsigned int increment=0;
 		Vertex* temp = listVertex[id - 1];
+		vector<Edge*> edge; //sauvegarder tous les edges du vertex pour ensuite les delete
+		while(increment<listEdge.size()) {
+			if (listEdge[increment]->getSrc() == temp || listEdge[increment]->getDest() == temp || 
+					listEdge[increment]->get_v0() == temp || listEdge[increment]->get_v1() == temp) {
+				edge.push_back(listEdge[increment]);
+				listEdge.erase(listEdge.begin() + increment);
+				sizeE--;
+			}
+			else { increment++; }
+		}
+		if (adj == 1) {
+			for (unsigned int i = 0; i < adjlist.size(); i++) {
+				if(i==(temp->getID()-1)){adjlist.erase(adjlist.begin()+i); }
+				else {
+					for (unsigned int j = 0; j < adjlist[i].size(); j++) {
+						if (adjlist[i][j] == temp) { adjlist[i].erase(adjlist[i].begin()+j);}
+					}
+				}
+			}
+		}
+		else {
+			adjmatrix.erase(adjmatrix.begin() + id-1);
+			for (unsigned int i = 0; i < adjmatrix.size(); i++) {
+				adjmatrix[i].erase(adjmatrix[i].begin() + id-1);
+			}
+		}
 		listVertex.erase(listVertex.begin() + (id - 1));
 		for (unsigned int i = 0; i < listVertex.size(); i++) {
-			listVertex[i]->setID(i + 1);
+			listVertex[i]->setID(i+1);
+		}
+		for (unsigned int i = 0; i < listEdge.size(); i++) {
+			listEdge[i]->setID(i + 1);
+		}
+		for (unsigned int i = 0; i < edge.size(); i++) {
+			delete edge[i];
+			sizeE--;
 		}
 		delete temp;
 		sizeV--;
@@ -165,7 +201,38 @@ void Graph::deleteVertex(unsigned int id) {
 void Graph::deleteEdge(unsigned int id) {
 	if (id <= listEdge.size()) {
 		Edge* temp = listEdge[id - 1];
-		listEdge.erase(listEdge.begin()+ (id-1));
+		if (type == 1) { //oriente
+			if (adj == 1) { //liste
+				unsigned int i = (listEdge[id - 1]->get_ID_Src())-1;
+				for (unsigned int j = 0; j < adjlist[i].size(); j++) {
+					if (listEdge[id - 1]->get_ID_Dest() == adjlist[i][j]->getID()) { adjlist[i].erase(adjlist[i].begin() + j); }
+				}
+			}
+			else { //matrice
+				unsigned int i = listEdge[id - 1]->get_ID_Src();
+				unsigned int j = listEdge[id - 1]->get_ID_Dest();
+				adjmatrix[i-1][j-1] = 0;
+			}
+		}
+		else { //non oriente
+			if (adj == 1) { //liste
+				unsigned int i = listEdge[id - 1]->get_ID_v0() - 1;
+				for (unsigned int j = 0; j < adjlist[i].size(); j++) {
+					if (listEdge[id - 1]->get_ID_v1() == adjlist[i][j]->getID()) { adjlist[i].erase(adjlist[i].begin() + j); }
+				}
+				i = listEdge[id - 1]->get_ID_v1() - 1;
+				for (unsigned int j = 0; j < adjlist[i].size(); j++) {
+					if (listEdge[id - 1]->get_ID_v0() == adjlist[i][j]->getID()) { adjlist[i].erase(adjlist[i].begin() + j); }
+				}
+			}
+			else { //matrice triangulaire
+				unsigned int i = listEdge[id - 1]->get_ID_v0();
+				unsigned int j = listEdge[id - 1]->get_ID_v1();
+				if(i>j) { adjmatrix[i - 1][j - 1] = 0; }
+				else { adjmatrix[j - 1][i - 1] = 0; }
+			}
+		}
+		listEdge.erase(listEdge.begin() + (id - 1));
 		for (unsigned int i = 0; i < listEdge.size(); i++) {
 			listEdge[i]->setID(i + 1);
 		}
@@ -205,29 +272,27 @@ void Graph::n_matrix2list() {
 }
 
 void Graph::o_list2matrix() {
-	delete adjmatrix;
-	adjmatrix = new unsigned int*[sizeV];
+	vector<unsigned int> temp;
 	for (unsigned int i = 0; i<sizeV; i++) {
-		adjmatrix[i] = new unsigned int[sizeV];
+		adjmatrix.push_back(temp);
 		for (unsigned int j = 0; j<sizeV; j++) {
 			if(is_o_edge(listVertex[i],listVertex[j]) != NULL) {
-				adjmatrix[i][j] = 1;
+				adjmatrix[i].push_back(1);
 			}
-			else {adjmatrix[i][j] = 0;}
+			else { adjmatrix[i].push_back(0);}
 		}
 	}
 }
 
 void Graph::n_list2matrix() {
-	delete adjmatrix;
-	adjmatrix = new unsigned int*[sizeV];
+	vector<unsigned int> temp;
 	for (unsigned int i = 0; i<sizeV; i++) {
-		adjmatrix[i] = new unsigned int[sizeV];
+		adjmatrix.push_back(temp);
 		for (unsigned int j = 0; j<i; j++) {
 			if(is_n_edge(listVertex[i],listVertex[j]) != NULL) {
-				adjmatrix[i][j] = 1;
+				adjmatrix[i].push_back(1);
 			}
-			else {adjmatrix[i][j] = 0;}
+			else {adjmatrix[i].push_back(0);}
 		}
 	}
 }

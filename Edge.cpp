@@ -5,13 +5,13 @@ Edge::Edge() {}
 Edge::~Edge() {}
 
 Edge::Edge(Vertex* v0,Vertex* v1, unsigned int _id, unsigned int _type) {
-	if (_type == 1) { /* oriente */
+	if (_type == 0) { /* oriente */
 		type = _type;
 		id = _id;
 		vertex.push_back(v0);
 		vertex.push_back(v1);
 	}
-	else if (_type == 0) { /* non oriente */
+	else if (_type == 1) { /* non oriente */
 		type = _type;
 		id = _id;
 		src = v0;

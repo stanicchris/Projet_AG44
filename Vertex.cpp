@@ -4,8 +4,8 @@ Vertex::Vertex() {}
 
 Vertex::~Vertex(){}
 
-Vertex::Vertex(int a,int b,unsigned int _id) {
+Vertex::Vertex(int a,int b,unsigned int id2) {
     x=a;
     y=b;
-    id = _id;
+    id = id2;
 }
