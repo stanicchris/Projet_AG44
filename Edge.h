@@ -1,7 +1,12 @@
 #ifndef EDGE_H
 #definedd
 #include "Vertex.hdd"
-
+dddddd
+d
+d
+d
+d
+d
 //lorqu'on créer une arrete, on lui associe necessairement deux sommets
 class Edge
 {
