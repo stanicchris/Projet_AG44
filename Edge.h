@@ -1,6 +1,5 @@
 #ifndef EDGE_H
-#define EDGE_H
-
+#definedd
 #include "Vertex.h"
 
 //lorqu'on créer une arrete, on lui associe necessairement deux sommets
