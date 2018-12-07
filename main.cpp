@@ -13,9 +13,7 @@ int main(int argc, char **argv)
 	ifstream infile;
 
 	graph->file2graph();
-	graph->display();
-	graph->deleteEdge(3);
-	graph->display();
+
 
 	delete graph;
 	system("pause");

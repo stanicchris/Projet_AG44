@@ -15,39 +15,44 @@ class Graph
 		unsigned int get_type() {return type;}
 		unsigned int get_adj() {return adj;}
 		void change_adj(){adj = 1-adj;}
-		// supprime un vertex ou un edge  en specifiant son ID
+		// delete an edge by specifying his ID
 		void deleteVertex(unsigned int);
 		void deleteEdge(unsigned int);
-		//affiche les id de tous les vertex et edge du graphe oriente
-		void display(); // choisit l'affichage en fonction du type de graphe
+		//  dusplay the ID of all the vertices and edges of the graph
+		void display(); // choose which function to use (O/NO)
 		void display_o();
 		void display_n();
-		// construit une matrice d'adjacence pour graphe
+		// build an adjacency matrix
 		void graph_o_matrix(ifstream&);
 		void graph_n_matrix(ifstream&);
-		// construit une liste d'adjacence pour graphe oriente
+		// build an adjacency list
 		void graph_o_list(ifstream&);
 		void graph_n_list(ifstream&);
-		void file2graph(); // construit le graphe a partir du fichier graph_file.txt
-		void create_n_edge(Vertex*, Vertex*); //créer un edge oriente pour les deux vertex en question
+		void file2graph(); // build the graph using the file graph_file.txt
+		void create_n_edge(Vertex*, Vertex*); //build an oriented edge for the two vertex
 		void create_o_edge(Vertex*, Vertex*);
-		// passer d'une list d'adjacence a une matrix (et inversement) pour
-		// les deux types de graphe
+		// switch between a matrix or a list for the 2 types of graph
 		void o_list2matrix();
 		void n_list2matrix();
 		void o_matrix2list();
 		void n_matrix2list();
-		Edge* is_n_edge(Vertex*, Vertex*); // verifie si un non oriente relie ces vertexs
+		Edge* is_n_edge(Vertex*, Vertex*); // check if the vertices are linked by an non-oriented edge
 		Edge* is_o_edge(Vertex*, Vertex*);
+		//------------ only oriented graph functions -----------
+		int graph_connexe(); // check if the graph is related (connexe)
+		int pathes_list_prefixe(); //adjacency list representation
+		int pathes_matrix_prefixe(); //adjacency matrix representation
+		//-------------------------------------------------
+
 private :
 	vector<Edge*> listEdge;
 	vector<Vertex*> listVertex;
 	unsigned int sizeV; // = listVertex.size()
 	unsigned int sizeE; // = listEdge.size()
-	vector<vector<Vertex*> > adjlist; //liste d'adjacence du graphe
-	vector<vector<unsigned int> > adjmatrix; //matrice d'adjacence du graphe
-	unsigned int type; // 1 oriente / 0 non-oriente
-	unsigned int adj; // 1 liste / 0 matrice
+	vector<vector<Vertex*> > adjlist; // adjacency list
+	vector<vector<unsigned int> > adjmatrix; //adjacency matrix
+	unsigned int type; // 1 oriented / 0 non-oriented
+	unsigned int adj; // 1 list / 0 matrix
 };
 
 #endif

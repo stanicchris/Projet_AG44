@@ -4,13 +4,13 @@
 #include "libs.h"
 #include "Vertex.h"
 
-/* lorqu'on créer une arrete, on lui associe necessairement deux sommets */
+/* when we create an edge, we automaticaly associate him two vertices */
 class Edge
 {
 	public :
 	Edge(); ///USELESS
 	~Edge();
-	Edge(Vertex*,Vertex*,unsigned int,unsigned int); // créer un edge avec ses vertexs, son ID et son type : 1 oriente/0 non oriente
+	Edge(Vertex*,Vertex*,unsigned int,unsigned int); // create an edge with his propreties
 	int getPoids(){return poids;}
 	unsigned int getID(){return id;}
 	Vertex* getSrc(){return src;}
@@ -30,14 +30,14 @@ class Edge
 	void o_matrix2list();
 	void n_matrix2list();
 	private :
-	// vertexs d'un edge oriente
+	// vertices of oriented graph
 	Vertex* src;
 	Vertex* dest;
-	// vertexs d'un edge non oriente
+	// vertices of non-oriented graph
 	vector<Vertex*> vertex;
 	int poids;
 	unsigned int id;
-	unsigned int type; // 1 oriente/0 non-oriente
+	unsigned int type; // 1 oriented   0 non-oriented
 };
 
 #endif
