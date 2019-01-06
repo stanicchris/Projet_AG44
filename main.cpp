@@ -10,10 +10,8 @@ int main(int argc, char **argv)
 {
 	cout << "---- Welcome to Graph ----" << endl << endl;
 	Graph* graph = new Graph();
-	ifstream infile;
-
 	graph->file2graph();
-
+	graph->display();
 
 	delete graph;
 	system("pause");

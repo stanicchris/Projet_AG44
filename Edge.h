@@ -27,8 +27,8 @@ class Edge
     void setDest(Vertex* d){dest=d;}
 	void set_v0(Vertex* v0);
 	void set_v1(Vertex* v1);
-	void o_matrix2list();
-	void n_matrix2list();
+//	void o_matrix2list();
+///	void n_matrix2list();
 	private :
 	// vertices of oriented graph
 	Vertex* src;

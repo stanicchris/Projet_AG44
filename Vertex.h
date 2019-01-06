@@ -8,7 +8,7 @@ using namespace std;
 class Vertex
 {
 	public :
-		Vertex();
+		Vertex();	
 		~Vertex();
 		Vertex(int,int,unsigned int); // create a vertex with his propreties
 		unsigned int getID() {return id; }
@@ -19,6 +19,8 @@ class Vertex
         void setY(int a){y=a;}
 		Color getColor() { return color; }
 		void setColor(Color c) { color = c; }
+		unsigned int tm[2]; // time arriving and getting out the vertex
+		Vertex* pred;
     private :
         unsigned int id;
         int x; // x position

@@ -36,24 +36,24 @@ void Graph::file2graph() {
 		for(unsigned int i=0; i<sizeV; i++) {
 			listVertex.push_back(new Vertex(0,0,i+1));
 		}
-		/*cout << _getcwd(NULL,0) << endl; display the current repositery */
+		/* cout << _getcwd(NULL,0) << endl; display the current repositery */
 		infile >> c;
-		if (c == 'o') { //oriented graph
+		if (c == 'o') { // oriented graph
 			type = 1;
 			infile >> c;
-			if (c == 'l') { //adjacency list
+			if (c == 'l') { // adjacency list
 				adj = 1;
 				cout << "graphe oriente avec liste adjacence" << endl;
 				graph_o_list(infile);
 			}
-			else if (c == 'm') {//adjacency matrix
+			else if (c == 'm') { // adjacency matrix
 				adj = 0;
 				cout << "graphe oriente avec matrice adjacence" << endl;
 				graph_o_matrix(infile);
 			}
 			else { cout << "Erreur dans le type d'adjacence du graphe dans le fichier txt" << endl; }
 		}
-		else if (c == 'n') {
+		else if (c == 'n') { // non-oriented graph
 			type = 0;
 			infile >> c;
 			if (c == 'l') {
@@ -71,6 +71,9 @@ void Graph::file2graph() {
 		else { cout << "Erreur dans le type de graphe dans le ichier txt" << endl; }
 	}
 	else { cout << "taille du graphe infereieur ou egale a 0" << endl; }
+	if (!infile.eof()) {
+		cout << "le fichier contient d'autres elements" << endl;
+	}
 	infile.close();
 }
 
@@ -143,7 +146,7 @@ void Graph::display_n() {
     }
 	cout << endl << "edge :" << endl;
 	for (unsigned int i = 0; i<listEdge.size(); i++) { //display all the edges with their vertices
-		cout << listEdge[i]->getID() << " : " << listEdge[i]->getPoids() << " : " << 
+		cout << listEdge[i]->getID() << " : " << 
 			listEdge[i]->get_ID_v0() << " et " << listEdge[i]->get_ID_v1() << endl;
 	}
 }
@@ -330,28 +333,119 @@ Edge* Graph::is_o_edge(Vertex* source, Vertex* destination) {
 	return NULL;
 }
 
-int Graph::graph_connexe() {
-	//check the type of adjacency to choose wich function to use
-	return 0;
+unsigned int Graph::graph_connexe() {
+	if (type == 0) {
+		//check the type of adjacency to choose wich function to use
+		unsigned int count = 0;
+		if (this->adj == 1) {
+			count = pathes_list_prefixe(0);
+		}
+		else {
+			count = pathes_matrix_prefixe(0);
+		}
+		return (count == listVertex.size());
+	}
+	else {
+		cout << "Le graphe n'est pas non-oriente, ne peut pas appliquer la fonction graph_connexe" << endl;
+		return 0;
+	}
 }
 
-int Graph::pathes_list_prefixe() {
+unsigned int Graph::pathes_list_prefixe(unsigned int index) {
 	if (listVertex.size() > 0) {
-		srand(time(0)); //initialise the random function
 		unsigned int count = 1;
-		Vertex* x = listVertex[rand()%listVertex.size()]; //choose a random vertex to begin
-		x->setColor(GRAY); //initialize the vertex
-		unsigned int i = 0;
-		while (adjlist[x->getID() + 1][i]->getColor() != WHITE) { i++; }
-
-		//searching.....
-
+		listVertex[index]->setColor(GRAY); //initialize the vertex
+		for (unsigned int i = 0; i < adjlist[index].size(); i++) {
+			if (adjlist[index][i]->getColor() == WHITE) {
+				count += pathes_list_prefixe(adjlist[index][i]->getID() - 1);
+			}
+		}
+		listVertex[index]->setColor(BLACK);
 		return count;
 	}
 	else { return 0; }
 }
 
-int Graph::pathes_matrix_prefixe() {
+unsigned int Graph::pathes_matrix_prefixe(unsigned int index) {
+	if (listVertex.size() > 0) {
+		unsigned int count = 1;
+		listVertex[index]->setColor(GRAY); //initialize the vertex
+		for (unsigned int i = 0; i <= index; i++) {
+			if ((adjmatrix[index][i] == 1) && (listVertex[i]->getColor() == WHITE)) {
+				count += pathes_matrix_prefixe(i);
+			}
+		}
+		for (unsigned int i = index; i < 5; i++) {
+			if ((adjmatrix[i][index] == 1) && (listVertex[i]->getColor() == WHITE)) {
+				count += pathes_matrix_prefixe(i);
+			}
+		}
+		listVertex[index]->setColor(BLACK);
+		return count;
+	}
+	else { return 0; }
+}
 
-	return 0;
+void Graph::dfs(Vertex* source) {
+	dfs_list.clear();
+	unsigned int t = 0;
+	unsigned int& time = t; //time is a reference which refers to t
+	for (unsigned int i = 0; i < listVertex.size(); i++) { //initialisation of all verticies
+		listVertex[i]->setColor(WHITE);
+		listVertex[i]->tm[0] = 0;
+		listVertex[i]->tm[1] = 0;
+	}
+	dfs_visit(source, time); //we begin by the source
+	//if certain verticies are not accessible from source, we reach them here
+	for (int i = 0; i < listVertex.size(); i++) {
+		if (listVertex[i]->getColor() == WHITE) {
+			dfs_visit(listVertex[i], time);
+		}
+	}
+}
+
+void Graph::dfs_visit(Vertex* v, unsigned int& time) {
+	time++;
+	v->setColor(GRAY);
+	v->tm[0] = time;
+	if (adj == 1) {
+		for (unsigned int i = 0; i < adjlist[v->getID()-1].size(); i++) {
+			if (adjlist[v->getID() - 1][i]->getColor() == WHITE) {
+				dfs_visit(adjlist[v->getID() - 1][i], time);
+			}
+		}
+	}
+	else {
+		if (type == 1) {
+			for (unsigned int i = 0; i < sizeV; i++) {
+				if (adjmatrix[v->getID()-1][i] == 1 && listVertex[i]->getColor() == WHITE) {
+					dfs_visit(listVertex[i], time);
+				}
+			}
+		}
+		else {
+			for (unsigned int i = 0; i <= v->getID()-1; i++) {
+				if (adjmatrix[v->getID() - 1][i] == 1 && listVertex[i]->getColor() == WHITE) {
+					dfs_visit(listVertex[i], time);
+				}
+			}
+			for (unsigned int i = v->getID()-1; i < sizeV; i++) {
+				if (adjmatrix[i][v->getID() - 1] == 1 && listVertex[i]->getColor() == WHITE) {
+					dfs_visit(listVertex[i], time);
+				}
+			}
+		}
+	}
+	time++;
+	v->tm[1] = time;
+	v->setColor(BLACK);
+	dfs_list.push_back(v->getID());
+}
+
+void Graph::print_dfs_list() {
+	cout << endl << "	====== DFS list =====" << endl;
+	for (unsigned int i = 0; i < dfs_list.size(); i++) {
+		cout << dfs_list[i]  << " : " << listVertex[dfs_list[i]-1]->tm[0] << "," << listVertex[dfs_list[i] - 1]->tm[1] << endl;
+	}
+	cout << "	======================" << endl;
 }

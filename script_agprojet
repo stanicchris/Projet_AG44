@@ -1,0 +1,7 @@
+
+#!/bin/bash
+make clean
+make
+valgrind ./main > output.txt
+make clean
+nano output.txt
