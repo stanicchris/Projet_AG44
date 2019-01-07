@@ -230,7 +230,7 @@ void Graph::deleteVertex(unsigned int id) {
 		delete temp;
 		sizeV--;
 	}
-	else { cout << "La liste de vertex ne contient pas le vertex n°" << id << endl; }
+	else { cout << "La liste de vertex ne contient pas le vertex nÂ°" << id << endl; }
 }
 
 void Graph::deleteEdge(unsigned int id) {
@@ -274,7 +274,7 @@ void Graph::deleteEdge(unsigned int id) {
 		delete temp;
 		sizeE--;
 	}
-	else { cout << "La liste de edge ne contient pas l'edge n°"<< id << endl; }
+	else { cout << "La liste de edge ne contient pas l'edge nÂ°"<< id << endl; }
 }
 
 void Graph::o_matrix2list() {
@@ -501,7 +501,7 @@ int Graph::kruskalMST()
 		{
 			// Current edge will be in the MST 
 			// so print it 
-			cout << u->getID() << " - " << v->getID() << cp_listEdge[i]->getPoids() << endl;
+			cout << u->getID() << " - " << v->getID() << \tcp_listEdge[i]->getPoids() << endl;
 
 			// Update MST weight 
 			mst_wt += cp_listEdge[i]->getPoids();
