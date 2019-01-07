@@ -24,12 +24,6 @@ int main(int argc, char **argv)
 	mst_wt = graph->primMST();
 	cout << "\nWeight of MST is " << mst_wt << "\n";
 
-	graph->deleteEdge(3);
-	graph->display();
-
-	
-
-
 	delete graph;
 	std::cout.rdbuf(coutbuf); //reset to standard output again
 	system("pause");
