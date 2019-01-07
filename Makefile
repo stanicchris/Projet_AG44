@@ -28,4 +28,4 @@ main : main.cpp Graph.cpp Edge.cpp Vertex.cpp List.cpp MatrixI.cpp Heap.cpp
 #	$(GCC) -o Heap.o -cpp Heap.cpp
 
 clean :
-	rm main
+	rm main output.txt

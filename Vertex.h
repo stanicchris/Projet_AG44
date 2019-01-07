@@ -5,23 +5,36 @@
 
 using namespace std;
 
-//un sommet ne peut faire partie que d'un seul graphe a la fois
 class Vertex
 {
 	public :
 		Vertex();
 		~Vertex();
-		Vertex(int,int,unsigned int); // créer un sommet avec ses coordonnees et un ID
+		Vertex(int,int,unsigned int); // create a vertex with his propreties
 		unsigned int getID() {return id; }
+		unsigned int getRank() { return rank; }
         int getX(){return x;}
         int getY(){return y;}
+		int getKey() { return key; }
+		Vertex* getParent() { return parent; }
         void setID(int a){id=a;}
         void setX(int a){x=a;}
         void setY(int a){y=a;}
+		void setRank(int a) { rank = a; }
+		void setParent(Vertex* a) { parent = a; }
+		void setKey(int a) { key = a; }
+		Color getColor() { return color; }
+		void setColor(Color c) { color = c; }
+		unsigned int tm[2]; // time arriving and getting out the vertex
+		Vertex* pred;
     private :
         unsigned int id;
-        int x; // position X dans l'espace
-        int y; // position Y dans l'espace
+		unsigned int rank;
+		int key;
+		Vertex* parent;
+        int x; // x position
+        int y; // y position
+        Color color;
 };
 
 #endif
