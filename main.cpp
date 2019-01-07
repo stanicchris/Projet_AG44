@@ -6,9 +6,9 @@
 int main(int argc, char **argv)
 {
 
-	std::ofstream out("source/output.txt");
-	std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
-	std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
+	ofstream out("source/graph_output.txt");
+	streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+	cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
 
 	cout << "---- Welcome to Graph ----" << endl << endl;
 	Graph* graph = new Graph();
@@ -16,13 +16,21 @@ int main(int argc, char **argv)
 	graph->file2graph();
 	graph->display();
 
-	graph->display_edge();
 
-	int mst_wt = graph->kruskalMST();
-	cout << "\nWeight of MST is " << mst_wt << "\n";
+	if (graph->get_type() == 0) {
+		ofstream out1("source/kruskal_output.txt");
+		cout.rdbuf(out1.rdbuf()); //redirect std::cout to out.txt!
 
-	mst_wt = graph->primMST();
-	cout << "\nWeight of MST is " << mst_wt << "\n";
+		int mst_wt = graph->kruskalMST();
+		cout << "\nWeight of MST is " << mst_wt << "\n";
+
+		ofstream out2("source/prim_output.txt");
+		std::cout.rdbuf(out2.rdbuf()); //redirect std::cout to out.txt!
+
+		mst_wt = graph->primMST();
+		cout << "\nWeight of MST is " << mst_wt << "\n";
+	}
+	
 
 	delete graph;
 	std::cout.rdbuf(coutbuf); //reset to standard output again

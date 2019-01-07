@@ -85,7 +85,7 @@ void Graph::graph_o_matrix(ifstream& infile) {
 		for (unsigned int j = 0; j<sizeV; j++) {//save the vertices with which he has an edge
 			infile >> val;
 			adjmatrix[i].push_back(val);
-			if (adjmatrix[i][j] == 1) { //check if the vertices i and j are linked by an edge
+			if (adjmatrix[i][j] >= 1) { //check if the vertices i and j are linked by an edge
 				create_o_edge(listVertex[i], listVertex[j], val); //create an edge for these vertices
 			}
 		}
@@ -153,34 +153,36 @@ void Graph::display_n() {
     for(unsigned int i=0; i<listVertex.size(); i++) {
         cout << listVertex[i]->getID() << " ";
     }
-	cout << endl << "edge :" << endl;
+	/*cout << endl << "edge :" << endl;
 	for (unsigned int i = 0; i<listEdge.size(); i++) {
-		cout << listEdge[i]->getID() << " de " << listEdge[i]->get_ID_v0() << " vers " << listEdge[i]->get_ID_v1() << endl;
-	}
+		cout << listEdge[i]->getID() << ": de " << listEdge[i]->get_ID_v0() << " vers " << listEdge[i]->get_ID_v1() << endl;
+	}*/
+	display_edge();
 }
 
 void Graph::display_o() {
-	cout << "vertex :" << endl;
+	cout << "vertex : ";
 	for (unsigned int i = 0;i < listVertex.size();i++) {
-		cout << listVertex[i]->getID() << endl;
+		cout << listVertex[i]->getID() << " ";
 	}
-	cout << endl << "edge :" << endl;
+	/*cout << endl << "edge :" << endl;
 	for (unsigned int i = 0;i < listEdge.size(); i++) {
-		cout << listEdge[i]->getID() << " " << listEdge[i]->get_ID_Src() << " et " << listEdge[i]->get_ID_Dest() << endl;
-	}
+		cout << listEdge[i]->getID() << ": " << listEdge[i]->get_ID_Src() << " vers " << listEdge[i]->get_ID_Dest() << endl;
+	}*/
+	display_edge();
 }
 
 void Graph::display_edge() {
 
-	cout << endl << "Affichage des edges et de leurs poids : " << endl;
+	cout << endl << "\nAffichage des edges et de leurs poids : \n" << endl;
 	if (type == 1) {
 		for (unsigned int i = 0; i<listEdge.size(); i++) {
-			cout << "De " << listEdge[i]->get_ID_Src() << " a " << listEdge[i]->get_ID_Dest() << " avec un poids de : " << listEdge[i]->getPoids() << endl;
+			cout << "De " << listEdge[i]->get_ID_Src() << " vers " << listEdge[i]->get_ID_Dest() << " avec un poids de : " << listEdge[i]->getPoids() << endl;
 		}
 	}
 	else {
 		for (unsigned int i = 0; i<listEdge.size(); i++) {
-			cout << "De " << listEdge[i]->get_ID_v0() << " a " << listEdge[i]->get_ID_v1() << " avec un poids de : " << listEdge[i]->getPoids() << endl;
+			cout << "De " << listEdge[i]->get_ID_v0() << " vers " << listEdge[i]->get_ID_v1() << " avec un poids de : " << listEdge[i]->getPoids() << endl;
 		}
 	}
 	cout << endl;
@@ -417,7 +419,7 @@ void Graph::dfs(Vertex* source) {
 	}
 	dfs_visit(source, time); //we begin by the source
 	//if certain verticies are not accessible from source, we reach them here
-	for (int i = 0; i < listVertex.size(); i++) {
+	for (unsigned int i = 0; i < listVertex.size(); i++) {
 		if (listVertex[i]->getColor() == WHITE) {
 			dfs_visit(listVertex[i], time);
 		}
@@ -501,7 +503,7 @@ int Graph::kruskalMST()
 		{
 			// Current edge will be in the MST 
 			// so print it 
-			cout << u->getID() << " - " << v->getID() << \tcp_listEdge[i]->getPoids() << endl;
+			cout << u->getID() << " - " << v->getID() << "\t" << cp_listEdge[i]->getPoids() << endl;
 
 			// Update MST weight 
 			mst_wt += cp_listEdge[i]->getPoids();
