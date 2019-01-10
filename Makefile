@@ -6,6 +6,8 @@ all : main
 main : main.cpp Graph.cpp Edge.cpp Vertex.cpp List.cpp MatrixI.cpp Heap.cpp
 	$(GCC) $(FLAGS) -o main -cpp main.cpp Graph.cpp Edge.cpp Vertex.cpp List.cpp MatrixI.cpp Heap.cpp
 
+make compute:
+	valgrind ./main
 #main.o : main.cpp
 #	$(GCC) -o main.o -cpp main.cpp
 
@@ -27,5 +29,5 @@ main : main.cpp Graph.cpp Edge.cpp Vertex.cpp List.cpp MatrixI.cpp Heap.cpp
 #Heap.o : Heap.cpp
 #	$(GCC) -o Heap.o -cpp Heap.cpp
 
-clean :
+clear :
 	rm main output.txt

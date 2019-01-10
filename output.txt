@@ -1,0 +1,7 @@
+---- Welcome to Graph ----
+
+graphe non oriente avec liste adjacence
+le fichier contient d'autres elements
+le graphe n'est pas connexe
+
+

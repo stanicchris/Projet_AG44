@@ -395,13 +395,25 @@ void Graph::dfs(Vertex* source) {
 		listVertex[i]->tm[0] = 0;
 		listVertex[i]->tm[1] = 0;
 	}
-	dfs_visit(source, time); //we begin by the source
+	if (source == NULL) {
+		dfs_visit(listVertex[0], time);
+	}
+	else {
+		dfs_visit(source, time); //we begin with the source
+	}
 	//if certain verticies are not accessible from source, we reach them here
-	for (int i = 0; i < listVertex.size(); i++) {
+	for (unsigned int i = 0; i < listVertex.size(); i++) {
 		if (listVertex[i]->getColor() == WHITE) {
 			dfs_visit(listVertex[i], time);
 		}
 	}
+	/* save the sort list in file sort_file.txt */
+	ofstream file;
+	file.open("sort_file.txt");
+	for (unsigned int i = 0; i < dfs_list.size(); i++) {
+		file << dfs_list[i] << " : " << listVertex[dfs_list[i] - 1]->tm[0] << "," << listVertex[dfs_list[i] - 1]->tm[1] << "\n";
+	}
+	file.close();
 }
 
 void Graph::dfs_visit(Vertex* v, unsigned int& time) {
