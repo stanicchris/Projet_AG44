@@ -8,5 +8,6 @@
 #include <vector>
 #include <fstream>	//lecture/ecriture fichier
 #include <time.h>
+#include <climits>
 
 enum Color { WHITE,GRAY,BLACK };

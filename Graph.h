@@ -4,8 +4,7 @@
 #include "libs.h"
 #include "Edge.h"
 #include "Vertex.h"
-#include "List.h"
-#include "MatrixI.h"
+
 
 class Graph
 {
@@ -29,8 +28,8 @@ class Graph
 		void graph_o_list(ifstream&);
 		void graph_n_list(ifstream&);
 		void file2graph(); // build the graph using the file graph_file.txt
-		void create_n_edge(Vertex*, Vertex*); //build an oriented edge for the two vertex
-		void create_o_edge(Vertex*, Vertex*);
+		void create_n_edge(Vertex*, Vertex*, unsigned int); //build an oriented edge for the two vertex
+		void create_o_edge(Vertex*, Vertex*, unsigned int);
 		// switch between a matrix or a list for the 2 types of graph
 		void o_list2matrix();
 		void n_list2matrix();
@@ -38,6 +37,18 @@ class Graph
 		void n_matrix2list();
 		Edge* is_n_edge(Vertex*, Vertex*); // check if the vertices are linked by an non-oriented edge
 		Edge* is_o_edge(Vertex*, Vertex*);
+		void display_edge(); //fonction de test
+
+		/* Operation sur le graph */
+		int kruskalMST();
+		vector<Edge*> tri_vecteur_edge_par_poids(vector<Edge*>);
+		void merge(Edge*);
+		Vertex* find(Vertex*);
+
+		int primMST();
+		int minKey(vector<Vertex*>, vector<bool>);
+		/* ====================== */
+
 		//------------ only oriented graph functions ------
 		unsigned int graph_connexe(); // check if the graph is related (connexe)
 		//return number of vertex recheable from the vertex listVertex[0]
@@ -49,6 +60,7 @@ class Graph
 		void dfs_visit(Vertex*, unsigned int &);
 		//-------------------------------------------------
 		void print_dfs_list(); //display the dfs list resulting from the dfs search
+
 private :
 	vector<Edge*> listEdge;
 	vector<Vertex*> listVertex;

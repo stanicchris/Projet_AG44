@@ -1,0 +1,7 @@
+	======================
+Prim MST :
+Edge 	Weight
+5 - 4	0
+5 - 3	0
+
+Weight of MST is 0

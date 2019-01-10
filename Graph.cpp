@@ -10,12 +10,12 @@ Graph::~Graph() {
 	for (unsigned int i = 0; i < listEdge.size(); i++) { delete listEdge[i]; }
 }
 
-void Graph::create_n_edge(Vertex* v1, Vertex* v2) {
-	listEdge.push_back(new Edge(v1, v2, listEdge.size()+1, 0));
+void Graph::create_n_edge(Vertex* v1, Vertex* v2, unsigned int _poids) {
+	listEdge.push_back(new Edge(v1, v2, listEdge.size() + 1, 0, _poids));
 }
 
-void Graph::create_o_edge(Vertex* src, Vertex* dest) {
-	listEdge.push_back(new Edge(src, dest, listEdge.size() + 1, 1));
+void Graph::create_o_edge(Vertex* src, Vertex* dest, unsigned int _poids) {
+	listEdge.push_back(new Edge(src, dest, listEdge.size() + 1, 1, _poids));
 }
 
 void Graph::file2graph() {
@@ -85,8 +85,8 @@ void Graph::graph_o_matrix(ifstream& infile) {
 		for (unsigned int j = 0; j<sizeV; j++) {//save the vertices with which he has an edge
 			infile >> val;
 			adjmatrix[i].push_back(val);
-			if (adjmatrix[i][j] == 1) { //check if the vertices i and j are linked by an edge
-				create_o_edge(listVertex[i], listVertex[j]); //create an edge for these vertices
+			if (adjmatrix[i][j] >= 1) { //check if the vertices i and j are linked by an edge
+				create_o_edge(listVertex[i], listVertex[j], val); //create an edge for these vertices
 			}
 		}
 	}
@@ -94,26 +94,32 @@ void Graph::graph_o_matrix(ifstream& infile) {
 
 void Graph::graph_n_matrix(ifstream& infile) {
 	vector<unsigned int> temp;
-	int val;
+	unsigned int val;
 	for (unsigned int i = 0; i<sizeV; i++) {
 		adjmatrix.push_back(temp);
 		for (unsigned int j = 0; j<i+1; j++) {
 			infile >> val;
 			adjmatrix[i].push_back(val);
-			if (adjmatrix[i][j] == 1) { create_n_edge(listVertex[i], listVertex[j]); }
+			if (adjmatrix[i][j] >= 1) { 
+				create_n_edge(listVertex[j], listVertex[i], val); 
+				create_n_edge(listVertex[i], listVertex[j], val);
+			}
 		}
 	}
 }
 
 void Graph::graph_o_list(ifstream& infile) {
 	unsigned int i;
+	unsigned int i_temp;
 	vector<Vertex*> temp;
 	for (unsigned int j = 0; j < sizeV; j++) {
 		adjlist.push_back(temp);
 		infile >> i;
 		while (i != 0) {
-			adjlist[j].push_back(listVertex[i-1]);
-			create_o_edge(listVertex[j], listVertex[i-1]);
+			adjlist[j].push_back(listVertex[i - 1]);
+			i_temp = i;
+			infile >> i;
+			if (i_temp != 0) { create_o_edge(listVertex[j], listVertex[i_temp -1], i); }
 			infile >> i;
 		}
 	}
@@ -121,13 +127,16 @@ void Graph::graph_o_list(ifstream& infile) {
 
 void Graph::graph_n_list(ifstream& infile) {
 	unsigned int i;
+	unsigned int i_temp;
 	vector<Vertex*> temp;
 	for (unsigned int j = 0; j < sizeV; j++) {
 		adjlist.push_back(temp);
 		infile >> i;
 		while (i != 0) {
-			adjlist[j].push_back(listVertex[i-1]);
-			create_n_edge(listVertex[j], listVertex[i-1]);
+			adjlist[j].push_back(listVertex[i - 1]);
+			i_temp = i;
+			infile >> i;
+			if (i_temp != 0) { create_n_edge(listVertex[j], listVertex[i_temp - 1], i); }
 			infile >> i;
 		}
 	}
@@ -144,23 +153,39 @@ void Graph::display_n() {
     for(unsigned int i=0; i<listVertex.size(); i++) { //display all the vertices
         cout << listVertex[i]->getID() << " ";
     }
-	cout << endl << "edge :" << endl;
-	for (unsigned int i = 0; i<listEdge.size(); i++) { //display all the edges with their vertices
-		cout << listEdge[i]->getID() << " : " << 
-			listEdge[i]->get_ID_v0() << " et " << listEdge[i]->get_ID_v1() << endl;
-	}
+	/*cout << endl << "edge :" << endl;
+	for (unsigned int i = 0; i<listEdge.size(); i++) {
+		cout << listEdge[i]->getID() << ": de " << listEdge[i]->get_ID_v0() << " vers " << listEdge[i]->get_ID_v1() << endl;
+	}*/
+	display_edge();
 }
 
 void Graph::display_o() {
-	cout << "vertex :" << endl;
+	cout << "vertex : ";
 	for (unsigned int i = 0;i < listVertex.size();i++) {
-		cout << listVertex[i]->getID() << endl;
+		cout << listVertex[i]->getID() << " ";
 	}
-	cout << endl << "edge :" << endl;
-	for (unsigned int i = 0;i < listEdge.size(); i++) {
-		cout << listEdge[i]->getID() << " : " << listEdge[i]->getPoids() << " : " << 
-			listEdge[i]->get_ID_Src() << " vers " << listEdge[i]->get_ID_Dest() << endl;
+	/*cout << endl << "edge :" << endl;
+	for (unsigned int i = 0;i < listEdge.size(); i++) 
+		cout << listEdge[i]->getID() << ": " << listEdge[i]->get_ID_Src() << " vers " << listEdge[i]->get_ID_Dest() << endl;
+	}*/
+	display_edge();
+}
+
+void Graph::display_edge() {
+
+	cout << endl << "\nAffichage des edges et de leurs poids : \n" << endl;
+	if (type == 1) {
+		for (unsigned int i = 0; i<listEdge.size(); i++) {
+			cout << "De " << listEdge[i]->get_ID_Src() << " vers " << listEdge[i]->get_ID_Dest() << " avec un poids de : " << listEdge[i]->getPoids() << endl;
+		}
 	}
+	else {
+		for (unsigned int i = 0; i<listEdge.size(); i++) {
+			cout << "De " << listEdge[i]->get_ID_v0() << " vers " << listEdge[i]->get_ID_v1() << " avec un poids de : " << listEdge[i]->getPoids() << endl;
+		}
+	}
+	cout << endl;
 }
 
 void Graph::deleteVertex(unsigned int id) {
@@ -207,7 +232,7 @@ void Graph::deleteVertex(unsigned int id) {
 		delete temp; //deallocate the space memory allocated for the edge
 		sizeV--;
 	}
-	else { cout << "La liste de vertex ne contient pas le vertex n°" << id << endl; }
+	else { cout << "La liste de vertex ne contient pas le vertex nÂ°" << id << endl; }
 }
 
 void Graph::deleteEdge(unsigned int id) {
@@ -254,7 +279,7 @@ void Graph::deleteEdge(unsigned int id) {
 		delete temp; //deallocate the space memory allocated for the edge
 		sizeE--;
 	}
-	else { cout << "La liste de edge ne contient pas l'edge n°"<< id << endl; }
+	else { cout << "La liste de edge ne contient pas l'edge nÂ°"<< id << endl; }
 }
 
 void Graph::o_matrix2list() {
@@ -460,4 +485,164 @@ void Graph::print_dfs_list() {
 		cout << dfs_list[i]  << " : " << listVertex[dfs_list[i]-1]->tm[0] << "," << listVertex[dfs_list[i] - 1]->tm[1] << endl;
 	}
 	cout << "	======================" << endl;
+}
+
+/* Functions returns weight of the MST*/
+
+int Graph::kruskalMST()
+{
+	cout << "	======================\nKruskal MST :\nEdge \tWeight\n";
+	int mst_wt = 0; // Initialize result 
+
+					// Sort edges in increasing order on basis of cost 
+					//sort(edges.begin(), edges.end());
+
+	vector<Edge*> cp_listEdge = listEdge;
+	cp_listEdge = tri_vecteur_edge_par_poids(cp_listEdge);
+
+	for (unsigned int i = 0; i < cp_listEdge.size(); i++)
+	{
+		Vertex* u = cp_listEdge[i]->get_v0();
+		Vertex* v = cp_listEdge[i]->get_v1();
+
+		Vertex* set_u = find(u);
+		Vertex* set_v = find(v);
+
+		// Check if the selected edge is creating 
+		// a cycle or not (Cycle is created if u 
+		// and v belong to same set) 
+		if (set_u != set_v)
+		{
+			// Current edge will be in the MST 
+			// so print it 
+			cout << u->getID() << " - " << v->getID() << "\t" << cp_listEdge[i]->getPoids() << endl;
+
+			// Update MST weight 
+			mst_wt += cp_listEdge[i]->getPoids();
+
+			// Merge two sets 
+			merge(cp_listEdge[i]);
+
+		}
+	}
+	for (unsigned int i = 0; i < sizeV; i++) {
+		listVertex[i]->setParent(listVertex[i]);
+	}
+	return mst_wt;
+}
+
+vector<Edge*> Graph::tri_vecteur_edge_par_poids(vector<Edge*> _listEdge) {
+	vector<Edge*> listEdge_tri;
+	listEdge_tri.push_back(_listEdge[0]);
+	unsigned int cpt = 0;
+	bool test;
+	for (unsigned int i = 1; i < _listEdge.size(); i++) {
+		test = 1;
+		while (test) {
+			if (cpt == listEdge_tri.size()) {
+				cpt = 0;
+				test = 0;
+				listEdge_tri.push_back(_listEdge[i]);
+			}
+			else {
+				if (listEdge_tri[cpt]->getPoids() > _listEdge[i]->getPoids()) {
+					//listEdge_tri.push_back(listEdge_tri[cpt]);
+					listEdge_tri.insert(listEdge_tri.begin() + (cpt + 1), listEdge_tri[cpt]);
+					listEdge_tri[cpt] = _listEdge[i];
+					cpt = 0;
+					test = 0;
+				}
+				else {
+					cpt++;
+				}
+			}
+		}
+	}
+	return listEdge_tri;
+}
+
+void Graph::merge(Edge* e)
+{
+
+	Vertex* x = e->get_v0()->getParent();
+	Vertex* y = e->get_v1()->getParent();
+	// Make tree with smaller height a subtree of the other tree
+	if (x->getRank() > y->getRank())
+		y->getParent()->setParent(x);
+	else // If rnk[x] <= rnk[y] 
+		x->getParent()->setParent(y);
+
+	if (x->getRank() == y->getRank())
+		y->setRank(y->getRank() + 1);
+
+}
+
+Vertex* Graph::find(Vertex* _u)
+{
+	Vertex* u = _u;
+	Vertex* res = u->getParent();
+	// Make the parent of the nodes in the path	from u--> parent de u pointe vers parent de u
+	if (u != u->getParent())
+		res->setParent(find(res->getParent()));
+	return res->getParent();
+}
+
+// A utility function to find the vertex with  
+// minimum key value, from the set of vertices  
+// not yet included in MST
+int Graph::minKey(vector<Vertex*> cp_listeVertex, vector<bool> mstSet)
+{
+	// Initialize min value 
+	int min = INT_MAX;
+	int min_index;
+
+	for (unsigned int v = 0; v < sizeV; v++)
+		if (mstSet[v] == false && cp_listeVertex[v]->getKey() < min) {
+			min = cp_listeVertex[v]->getKey();
+			min_index = v;
+		}
+
+	return min_index;
+}
+
+int Graph::primMST()
+{
+
+	int mst_wt = 0;
+
+	vector<Edge*> cp_listEdge = listEdge;
+	vector<Vertex*> cp_listVertex = listVertex;
+
+
+	// Initialize all keys as INFINITE 
+	for (unsigned int i = 0; i < sizeV; i++) {
+		cp_listVertex[i]->setKey(INT_MAX);
+	}
+	// Always include first 1st vertex in MST. 
+	// Make key 0 so that this vertex is picked as first vertex. 
+	cp_listVertex[0]->setKey(0);  
+
+	// The MST will have V vertices
+	cout <<"	======================\nPrim MST :\nEdge \tWeight\n";
+
+	for (unsigned int i = 1; i < sizeV; i++) { // For each vertices
+		for (unsigned int j = 0; j < cp_listEdge.size(); j++) {
+			if (cp_listEdge[j]->get_ID_v0() == i) {
+				if (cp_listEdge[j]->get_v1()->getKey() > cp_listEdge[j]->getPoids()) {
+					cp_listEdge[j]->get_v1()->setParent(cp_listEdge[j]->get_v0());
+					cp_listEdge[j]->get_v1()->setKey(cp_listEdge[j]->getPoids());
+				}
+			}
+		}
+	}
+
+	for (unsigned int i = 0; i < cp_listEdge.size(); i++) {
+		if (cp_listEdge[i]->get_v0() == cp_listEdge[i]->get_v1()->getParent()) {
+			cout << cp_listEdge[i]->get_ID_v0() << " - " << cp_listEdge[i]->get_ID_v1() << "\t" << cp_listEdge[i]->getPoids()
+				<< "\n";
+			mst_wt += cp_listEdge[i]->getPoids();
+		}
+	}
+	
+	return mst_wt;
 }
