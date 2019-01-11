@@ -387,12 +387,12 @@ unsigned int Graph::pathes_matrix_prefixe(unsigned int index) {
 		unsigned int count = 1;
 		listVertex[index]->setColor(GRAY); //initialize the vertex
 		for (unsigned int i = 0; i <= index; i++) {
-			if ((adjmatrix[index][i] == 1) && (listVertex[i]->getColor() == WHITE)) {
+			if ((adjmatrix[index][i] >= 1) && (listVertex[i]->getColor() == WHITE)) {
 				count += pathes_matrix_prefixe(i);
 			}
 		}
 		for (unsigned int i = index; i < 5; i++) {
-			if ((adjmatrix[i][index] == 1) && (listVertex[i]->getColor() == WHITE)) {
+			if ((adjmatrix[i][index] >= 1) && (listVertex[i]->getColor() == WHITE)) {
 				count += pathes_matrix_prefixe(i);
 			}
 		}
