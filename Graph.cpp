@@ -36,7 +36,6 @@ void Graph::file2graph() {
 		for(unsigned int i=0; i<sizeV; i++) {
 			listVertex.push_back(new Vertex(0,0,i+1));
 		}
-		/* cout << _getcwd(NULL,0) << endl; display the current repositery */
 		infile >> c;
 		if (c == 'o') { // oriented graph
 			type = 1;
@@ -153,10 +152,6 @@ void Graph::display_n() {
     for(unsigned int i=0; i<listVertex.size(); i++) { //display all the vertices
         cout << listVertex[i]->getID() << " ";
     }
-	/*cout << endl << "edge :" << endl;
-	for (unsigned int i = 0; i<listEdge.size(); i++) {
-		cout << listEdge[i]->getID() << ": de " << listEdge[i]->get_ID_v0() << " vers " << listEdge[i]->get_ID_v1() << endl;
-	}*/
 	display_edge();
 }
 
@@ -165,10 +160,6 @@ void Graph::display_o() {
 	for (unsigned int i = 0;i < listVertex.size();i++) {
 		cout << listVertex[i]->getID() << " ";
 	}
-	/*cout << endl << "edge :" << endl;
-	for (unsigned int i = 0;i < listEdge.size(); i++) 
-		cout << listEdge[i]->getID() << ": " << listEdge[i]->get_ID_Src() << " vers " << listEdge[i]->get_ID_Dest() << endl;
-	}*/
 	display_edge();
 }
 
@@ -493,10 +484,6 @@ int Graph::kruskalMST()
 {
 	cout << "	======================\nKruskal MST :\nEdge \tWeight\n";
 	int mst_wt = 0; // Initialize result 
-
-					// Sort edges in increasing order on basis of cost 
-					//sort(edges.begin(), edges.end());
-
 	vector<Edge*> cp_listEdge = listEdge;
 	cp_listEdge = tri_vecteur_edge_par_poids(cp_listEdge);
 
@@ -546,7 +533,6 @@ vector<Edge*> Graph::tri_vecteur_edge_par_poids(vector<Edge*> _listEdge) {
 			}
 			else {
 				if (listEdge_tri[cpt]->getPoids() > _listEdge[i]->getPoids()) {
-					//listEdge_tri.push_back(listEdge_tri[cpt]);
 					listEdge_tri.insert(listEdge_tri.begin() + (cpt + 1), listEdge_tri[cpt]);
 					listEdge_tri[cpt] = _listEdge[i];
 					cpt = 0;
@@ -607,13 +593,9 @@ int Graph::minKey(vector<Vertex*> cp_listeVertex, vector<bool> mstSet)
 
 int Graph::primMST()
 {
-
 	int mst_wt = 0;
-
 	vector<Edge*> cp_listEdge = listEdge;
 	vector<Vertex*> cp_listVertex = listVertex;
-
-
 	// Initialize all keys as INFINITE 
 	for (unsigned int i = 0; i < sizeV; i++) {
 		cp_listVertex[i]->setKey(INT_MAX);
@@ -624,7 +606,6 @@ int Graph::primMST()
 
 	// The MST will have V vertices
 	cout <<"	======================\nPrim MST :\nEdge \tWeight\n";
-
 	for (unsigned int i = 1; i < sizeV; i++) { // For each vertices
 		for (unsigned int j = 0; j < cp_listEdge.size(); j++) {
 			if (cp_listEdge[j]->get_ID_v0() == i) {
@@ -635,7 +616,6 @@ int Graph::primMST()
 			}
 		}
 	}
-
 	for (unsigned int i = 0; i < cp_listEdge.size(); i++) {
 		if (cp_listEdge[i]->get_v0() == cp_listEdge[i]->get_v1()->getParent()) {
 			cout << cp_listEdge[i]->get_ID_v0() << " - " << cp_listEdge[i]->get_ID_v1() << "\t" << cp_listEdge[i]->getPoids()
@@ -643,6 +623,5 @@ int Graph::primMST()
 			mst_wt += cp_listEdge[i]->getPoids();
 		}
 	}
-	
 	return mst_wt;
 }

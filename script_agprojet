@@ -3,4 +3,4 @@
 make clear
 make
 valgrind ./main >> output.txt
-nano output.txt
+gedit output.txt &
